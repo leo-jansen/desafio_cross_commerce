@@ -2,18 +2,18 @@ export class EtlModel {
 	static extract = false;
 	static order = false;
 	static firstAccess = true;
+	static firstOrder = true;
 	static listNumbers: Array<number> = [];
-	static firstExtract: boolean;
 
 	/*
 	* Merge Sort escolhido por ser um algoritmo estavel e garantir o desempenho n log n
 	* explicação dos algoritmos de ordenação https://youtube.com/playlist?list=PL5TJqBvpXQv4l7nH-08fMfyl7aDFNW_fC
 	*/
-	mergeSort(listNumbers: Array<number>, beginning: number, end: number) {
+	async mergeSort(listNumbers: Array<number>, beginning: number, end: number) {
 		if (end - beginning > 1) {
 			let middle = Math.trunc((end + beginning) / 2); //divisão inteira
-			this.mergeSort(listNumbers, beginning, middle);
-			this.mergeSort(listNumbers, middle, end);
+			await this.mergeSort(listNumbers, beginning, middle);
+			await this.mergeSort(listNumbers, middle, end);
 			this.merge(listNumbers, beginning, middle, end);
 		}
 	}
