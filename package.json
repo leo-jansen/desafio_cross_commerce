@@ -6,7 +6,8 @@
   "author": "leo-jansen <janseleo@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --transpile-only src/server.ts"
+    "dev": "ts-node-dev --transpile-only src/server.ts",
+		"prod": "node dist/server.js"
   },
   "dependencies": {
     "axios": "^0.24.0",
