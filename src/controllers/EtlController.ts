@@ -6,7 +6,7 @@ export class EtlController {
 	async handle(request: Request, response: Response) {
 		const service = new EtlService();
 		if (EtlModel.extract == false && EtlModel.firstAccess == true ) {
-			let result = service.extract(EtlModel.listNumbers); // começando a estração dos dados
+			service.extractall(); // começando a estração dos dados
 			return response.status(200)
 				.json({ "message": "Começando a extração dos dados, por favor faça a requisiçao mais tarde para receber os dados" });
 		}
