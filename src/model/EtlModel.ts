@@ -1,3 +1,5 @@
+import logger from "../logger";
+
 export class EtlModel {
 	static extract = false;
 	static order = false;
@@ -10,6 +12,7 @@ export class EtlModel {
 	* explicação dos algoritmos de ordenação https://youtube.com/playlist?list=PL5TJqBvpXQv4l7nH-08fMfyl7aDFNW_fC
 	*/
 	async mergeSort(listNumbers: Array<number>, beginning: number, end: number) {
+		logger.trace(`Metodo de mersort do model, começando a ordenar`);
 		if (end - beginning > 1) {
 			let middle = Math.trunc((end + beginning) / 2); //divisão inteira
 			await this.mergeSort(listNumbers, beginning, middle);
@@ -22,6 +25,7 @@ export class EtlModel {
 	* etapa de junção da lista
 	*/
 	merge(listNumbers: Array<number>, beginning: number, middle: number, end: number) {
+		logger.trace(`Junção dos dados separados`);
 		let left_list = listNumbers.slice(beginning, middle);
 		let right_list = listNumbers.slice(middle, end);
 		let top_left = 0;

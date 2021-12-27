@@ -1,4 +1,5 @@
 import axios from "axios";
+import logger from "../logger";
 import { EtlModel } from "../model/EtlModel";
 
 const instance = axios.create({
@@ -18,20 +19,23 @@ export class EtlService {
 		let resp = await instance
 			.get(`/api/numbers?page=${index}`)
 			.then(async res => {
-				console.log(`requisição: http://challenge.dienekes.com.br/api/numbers?page=${index}`)
+				logger.debug(`requisição: http://challenge.dienekes.com.br/api/numbers?page=${index}`);
 				if (res.data['numbers'].length == 0) {
+					logger.trace("Retorno do endpoint com Array numbers vazio");
 					EtlModel.extract = true;
 					await this.sortNumbers();
 					return 0;
 				} else {
 					res.data['numbers'].forEach((element: string) => {
+						logger.trace("Inserindo elemento no array do EtlModel");
 						listNumbers.push(Number(element));
 					});
 					return index + 1;
 				}
 			})
 			.catch(erro => {
-				console.log(`Erro na requisição: http://challenge.dienekes.com.br/api/numbers?page=${index} \nRefazendo:`)
+				logger.error(erro);
+				logger.warn(`Erro na requisição: http://challenge.dienekes.com.br/api/numbers?page=${index} ||Refazendo`);
 				return index;
 			});
 		return resp;
@@ -42,7 +46,9 @@ export class EtlService {
 	*/
 	async extractall() {
 		let index = 1;
+		logger.info("Começando a extração dos dados")
 		while (index != 0) {
+			logger.trace(`while para pegar todas as uri's do endipoint indice: ${index}`)
 			index = await this.extract(EtlModel.listNumbers, index);
 		}
 	}
@@ -52,6 +58,7 @@ export class EtlService {
 	*/
 	async sortNumbers() {
 		const model = new EtlModel();
+		logger.trace(`Metodo de ordenação do service`)
 		await model.mergeSort(EtlModel.listNumbers, 0, EtlModel.listNumbers.length);
 		EtlModel.order = true;
 	}
